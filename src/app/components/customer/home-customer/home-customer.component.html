@@ -1,0 +1,39 @@
+<app-navbar-customer></app-navbar-customer>
+
+<mat-tab-group dynamicHeight class="divisor">
+  <mat-tab label="Usuario">
+    <div class="usuario-container">
+      <p>Toda la información de la empresa.</p>
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Proyecto">
+    <div class="container">
+      <div class="filtro-container">
+        <mat-form-field appearance="fill">
+          <mat-label>Categoría</mat-label>
+          <mat-select>
+            <mat-option
+              *ngFor="let category of categorys"
+              [value]="category.value"
+            >
+              {{ category.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="filtro">
+          <mat-label>Nombre del proyecto</mat-label>
+          <input matInput placeholder="Buscar..." #input />
+        </mat-form-field>
+      </div>
+      <div class="button-container">
+        <button mat-raised-button class="demo-button">
+          <mat-icon>add</mat-icon>Agregar proyecto
+        </button>
+      </div>
+    </div>
+
+    <p>Tabla expandible de proyectos</p>
+  </mat-tab>
+</mat-tab-group>
