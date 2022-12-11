@@ -1,123 +1,161 @@
-<app-navbar-customer></app-navbar-customer>
+<body>
+  <app-navbar-customer></app-navbar-customer>
 
-<mat-tab-group dynamicHeight class="divisor">
-  <mat-tab label="Usuario">
-    <div class="usuario-container">
-      <p>Toda la información de la empresa.</p>
-    </div>
-  </mat-tab>
-
-  <mat-tab label="Proyecto">
-    <div class="container">
-      <div class="filtro-container">
-        <mat-form-field appearance="fill">
-          <mat-label>Categoría</mat-label>
-          <mat-select>
-            <mat-option
-              *ngFor="let category of categories"
-              [value]="category.value"
-            >
-              {{ category.viewValue }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field class="filtro">
-          <mat-label>Nombre del proyecto</mat-label>
-          <input matInput placeholder="Buscar..." #input />
-        </mat-form-field>
+  <mat-tab-group dynamicHeight class="divisor">
+    <mat-tab label="Usuario">
+      <div class="usuario-container">
+        <p>Toda la información de la empresa.</p>
       </div>
-      <div class="button-container">
-        <button mat-raised-button class="demo-button">
-          <mat-icon>add</mat-icon>Agregar proyecto
-        </button>
-      </div>
-    </div>
+    </mat-tab>
 
-    <!-- <p>Tabla expandible de proyectos</p> -->
+    <mat-tab label="Proyecto">
+      <p class="note">Nota: Los filtros funcionan por separado.</p>
+      <div class="container">
+        <div class="filtro-container">
+          <mat-form-field appearance="fill">
+            <mat-label>Categoría</mat-label>
+            <mat-select [value]="selected" [(ngModel)]="category">
+              <mat-option
+                *ngFor="let category of categories"
+                [value]="category.value"
+                (click)="filterCategory(category.viewValue)"
+              >
+                {{ category.viewValue }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-    <table
-      mat-table
-      [dataSource]="dataSource"
-      multiTemplateDataRows
-      class="mat-elevation-z8"
-    >
-      <ng-container
-        matColumnDef="{{ column }}"
-        *ngFor="let column of columnsToDisplay"
-      >
-        <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
-        <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
-      </ng-container>
-      <ng-container matColumnDef="expand">
-        <th mat-header-cell *matHeaderCellDef aria-label="row actions">
-          &nbsp;
-        </th>
+          <mat-form-field class="filtro">
+            <mat-label>Nombre del proyecto</mat-label>
+            <input
+              matInput
+              placeholder="Buscar.."
+              #input
+              (keyup)="applyFilter($event)"
+              [(ngModel)]="search"
+            />
+          </mat-form-field>
+        </div>
 
-        <td mat-cell *matCellDef="let element">
+        <div class="button-container">
           <button
-            mat-icon-button
-            aria-label="expand row"
-            (click)="
-              expandedElement = expandedElement === element ? null : element;
-              $event.stopPropagation()
-            "
+            mat-raised-button
+            class="demo-button"
+            (click)="resetFilters()"
           >
-            <mat-icon *ngIf="expandedElement !== element"
-              >keyboard_arrow_down</mat-icon
-            >
-            <mat-icon *ngIf="expandedElement === element"
-              >keyboard_arrow_up</mat-icon
-            >
+            <mat-icon>refresh</mat-icon>
+            Restablecer
           </button>
-          <button mat-icon-button>
-            <mat-icon>update</mat-icon>
-          </button>
-          <button mat-icon-button (click)="delete()">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
 
-      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-      <ng-container matColumnDef="expandedDetail">
-        <td
-          mat-cell
-          *matCellDef="let element"
-          [attr.colspan]="columnsToDisplayWithExpand.length"
-        >
-          <div
-            class="example-element-detail"
-            [@detailExpand]="
-              element == expandedElement ? 'expanded' : 'collapsed'
-            "
+          <button mat-raised-button class="demo-button">
+            <mat-icon>add</mat-icon>
+            Agregar proyecto
+          </button>
+        </div>
+      </div>
+
+      <!-- <p>Tabla expandible de proyectos</p> -->
+
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        multiTemplateDataRows
+        class="mat-elevation-z8"
+      >
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Nombre del proyecto</th>
+          <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef>Categoría</th>
+          <td mat-cell *matCellDef="let element">{{ element.category }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="expand">
+          <th mat-header-cell *matHeaderCellDef aria-label="row actions">
+            &nbsp;
+          </th>
+
+          <td mat-cell *matCellDef="let element">
+            <button
+              mat-icon-button
+              aria-label="expand row"
+              (click)="
+                expandedElement = expandedElement === element ? null : element;
+                $event.stopPropagation()
+              "
+            >
+              <mat-icon *ngIf="expandedElement !== element">
+                keyboard_arrow_down
+              </mat-icon>
+              <mat-icon *ngIf="expandedElement === element">
+                keyboard_arrow_up
+              </mat-icon>
+            </button>
+            <button mat-icon-button>
+              <mat-icon>update</mat-icon>
+            </button>
+            <button mat-icon-button>
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+        <ng-container matColumnDef="expandedDetail">
+          <td
+            mat-cell
+            *matCellDef="let element"
+            [attr.colspan]="columnsToDisplayWithExpand.length"
           >
-            <div class="example-element-diagram">
-              <div class="example-element-position">
-                <img src="{{ element.qr }}" alt="qr" width="100" height="100" />
+            <div
+              class="example-element-detail"
+              [@detailExpand]="
+                element == expandedElement ? 'expanded' : 'collapsed'
+              "
+            >
+              <div class="example-element-diagram">
+                <div class="example-element-position">
+                  <img
+                    src="{{ element.qr }}"
+                    alt="qr"
+                    width="100"
+                    height="100"
+                  />
+                </div>
+              </div>
+              <div id="content-element">
+                <h2>Compañía: {{ element.company }}</h2>
+                <p>Descripción: {{ element.description }}</p>
+
+                <button mat-raised-button class="demo-button">
+                  <mat-icon>download</mat-icon>
+                  Descargar
+                </button>
               </div>
             </div>
-            <div id="content-element">
-              <h2>Compañía: {{ element.company }}</h2>
-              <p>Descripción: {{ element.description }}</p>
-            </div>
-          </div>
-        </td>
-      </ng-container>
+          </td>
+        </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
-      <tr
-        mat-row
-        *matRowDef="let element; columns: columnsToDisplayWithExpand"
-        class="example-element-row"
-        [class.example-expanded-row]="expandedElement === element"
-        (click)="expandedElement = expandedElement === element ? null : element"
-      ></tr>
-      <tr
-        mat-row
-        *matRowDef="let row; columns: ['expandedDetail']"
-        class="example-detail-row"
-      ></tr>
-    </table>
-  </mat-tab>
-</mat-tab-group>
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+        <tr
+          mat-row
+          *matRowDef="let element; columns: columnsToDisplayWithExpand"
+          class="example-element-row"
+          [class.example-expanded-row]="expandedElement === element"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: ['expandedDetail']"
+          class="example-detail-row"
+        ></tr>
+      </table>
+      <mat-paginator
+        [pageSizeOptions]="[2, 4, 6, 8]"
+        showFirstLastButtons
+        aria-label="Seleccionar paginas"
+      ></mat-paginator>
+    </mat-tab>
+  </mat-tab-group>
+</body>

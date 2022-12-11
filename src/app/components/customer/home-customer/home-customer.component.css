@@ -1,9 +1,13 @@
+body {
+  background-color: #fbfbfb;
+}
+
 .divisor {
   margin: 30px;
 }
 
 .container {
-  margin: 10px;
+  margin: 15px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -23,7 +27,7 @@
 }
 
 table {
-  width: 100%;
+  width: 80%;
 }
 
 tr.example-detail-row {
@@ -61,4 +65,16 @@ tr.example-element-row:not(.example-expanded-row):active {
   flex-direction: column;
   margin-left: 20px;
   margin-top: 10px;
+}
+
+.demo-button {
+  margin-left: 25px;
+}
+
+.note {
+  margin-left: 15px;
+}
+
+.button-container {
+  padding-bottom: 20px;
 }
