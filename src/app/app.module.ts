@@ -31,6 +31,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { NavbarCustomerComponent } from './components/customer/home-customer/navbar-customer/navbar-customer.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -65,7 +67,9 @@ import { MatSelectModule } from '@angular/material/select';
     MatInputModule,
     HttpClientModule,
     MatTabsModule,
-    MatSelectModule
+    MatSelectModule,
+    MatExpansionModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent],
