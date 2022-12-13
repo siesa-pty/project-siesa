@@ -2,6 +2,25 @@ body {
   background-color: #fbfbfb;
 }
 
+h1 {
+  font-size: 44px;
+  font-weight: 700;
+}
+
+#notLogin {
+  position: fixed;
+  top: 50%;
+  left: 40%;
+  margin-top: -50px;
+  margin-left: -100px;
+}
+
+#buttonLogin {
+  background-color: #f7ac23;
+  margin-top: 15px;
+  margin-left: 30%;
+}
+
 .divisor {
   margin: 30px;
 }

@@ -1,1 +1,83 @@
-<p>edit-project works!</p>
+<div id="content">
+  <h1>Actualizar Proyecto</h1>
+
+  <mat-form-field id="mat-form-field" appearance="fill" class="name">
+    <mat-label>Nombre del proyecto</mat-label>
+    <input matInput [(ngModel)]="nameProject" *ngFor="let data of dataSource" />
+  </mat-form-field>
+
+  <mat-form-field
+    class="example-full-width"
+    id="mat-form-field"
+    class="description"
+  >
+    <mat-label>Descripción del proyecto</mat-label>
+    <textarea matInput [(ngModel)]="descriptionProject"></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" id="mat-form-field" class="category">
+    <mat-label>Categoría</mat-label>
+    <mat-select [(ngModel)]="category">
+      <mat-option *ngFor="let category of categories">
+        {{ category.viewValue }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field id="mat-form-field" appearance="fill" class="contractor">
+    <mat-label>Sucursal</mat-label>
+    <input matInput [(ngModel)]="branchOffice" />
+  </mat-form-field>
+
+  <mat-form-field id="mat-form-field" appearance="fill" class="contractor">
+    <mat-label>Equipo</mat-label>
+    <input matInput [(ngModel)]="equipment" />
+  </mat-form-field>
+
+  <mat-form-field
+    class="example-full-width"
+    id="mat-form-field"
+    class="description"
+  >
+    <mat-label>Descripción del proyecto</mat-label>
+    <textarea matInput [(ngModel)]="descriptionEquipment"></textarea>
+  </mat-form-field>
+
+  <mat-form-field
+    class="example-full-width"
+    id="mat-form-field"
+    class="file"
+    (click)="fileInput.click()"
+  >
+    <mat-label>Subir plano</mat-label>
+    <button mat-icon-button matPrefix>
+      <mat-icon>attach_file</mat-icon>
+    </button>
+    <!-- <input matInput [(ngModel)]="file" (click)="fileInput.click()" /> -->
+    <input type="text" readonly matInput />
+    <input
+      hidden
+      (change)="onFileSelected()"
+      #fileInput
+      type="file"
+      id="file"
+    />
+  </mat-form-field>
+
+  <div id="buttons">
+    <button mat-raised-button id="button" (click)="close()">
+      <mat-icon>cancel</mat-icon>
+      Cancelar
+    </button>
+
+    <button
+      mat-raised-button
+      id="button"
+      class="button-login"
+      (click)="update()"
+    >
+      <mat-icon>update</mat-icon>
+      Actualizar proyecto
+    </button>
+  </div>
+</div>

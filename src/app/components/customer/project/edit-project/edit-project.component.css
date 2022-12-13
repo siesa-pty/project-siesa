@@ -1,0 +1,57 @@
+.example-full-width {
+    width: 100%;
+  }
+
+  h1 {
+    margin-top: 30px;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 30px;
+  }
+  
+  #buttons {
+    display: flex;
+    justify-content: space-around;
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 10px;
+  }
+  
+  #content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: justify;
+    margin: auto;
+  }
+  
+  #mat-form-field {
+    width: 80%;
+  }
+
+  #file {
+    display: flex;
+    justify-content: space-between;
+    display: none;
+  }
+  
+  .button-login {
+    background-color: #f7ac23;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    h1 {
+      margin-bottom: 10px;
+      margin-top: 10px;
+    }
+  
+    #buttons {
+      flex-wrap: wrap;
+    }
+  
+    #button {
+      margin: 10px;
+    }
+  }
+  
