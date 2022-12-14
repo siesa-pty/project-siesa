@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog'
+import { ProjectService } from 'src/app/services/project.service';
+import { Project } from '../../../../model/project.model'
+
 
 @Component({
   selector: 'app-add-project',
@@ -9,14 +12,15 @@ import { MatDialogRef } from '@angular/material/dialog'
 export class AddProjectCustomerComponent {
   category: any;
   branchOffice: any;
-  nameProject: any;
-  descriptionEquipment: any;
+  name: any;
+  description: any;
   descriptionProject: any;
-  equipment: any
+  equipmentName: any
   srcResult: any;
   file: any;
 
-  constructor(private dialogRef: MatDialogRef<AddProjectCustomerComponent>){}
+
+  constructor(private dialogRef: MatDialogRef<AddProjectCustomerComponent>, private projectService: ProjectService){}
   categories: Category[] = [
     { value: 'mecanica-0', viewValue: 'Mecánica' },
     { value: 'electrica-1', viewValue: 'Eléctrica' },
@@ -38,6 +42,20 @@ export class AddProjectCustomerComponent {
   
       reader.readAsArrayBuffer(inputNode.files[0]);
     }
+  }
+
+  addProject() {
+    const project = {
+      name: this.name,
+      descriptionProject: this.descriptionProject,
+      category: this.category,
+      branchOffice: this.branchOffice,
+      equipmentName: this.equipmentName,
+      description: this.description
+    }
+    this.projectService.addProject(project).subscribe(data => {
+      console.log(data);
+    });
   }
 }
 

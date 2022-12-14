@@ -3,7 +3,7 @@
 
   <mat-form-field id="mat-form-field" appearance="fill" class="name">
     <mat-label>Nombre del proyecto</mat-label>
-    <input matInput [(ngModel)]="nameProject" />
+    <input matInput [(ngModel)]="name" />
   </mat-form-field>
 
   <mat-form-field
@@ -18,7 +18,7 @@
   <mat-form-field appearance="fill" id="mat-form-field" class="category">
     <mat-label>Categoría</mat-label>
     <mat-select [(ngModel)]="category">
-      <mat-option *ngFor="let category of categories" [value]="category.value">
+      <mat-option *ngFor="let category of categories" [value]="category.viewValue">
         {{ category.viewValue }}
       </mat-option>
     </mat-select>
@@ -31,7 +31,7 @@
 
   <mat-form-field id="mat-form-field" appearance="fill" class="contractor">
     <mat-label>Nombre del equipo</mat-label>
-    <input matInput [(ngModel)]="equipment" />
+    <input matInput [(ngModel)]="equipmentName" />
   </mat-form-field>
 
   <mat-form-field
@@ -40,7 +40,7 @@
     class="description"
   >
     <mat-label>Descripción del equipo</mat-label>
-    <textarea matInput [(ngModel)]="descriptionEquipment"></textarea>
+    <textarea matInput [(ngModel)]="description"></textarea>
   </mat-form-field>
 
   <mat-form-field
@@ -71,7 +71,7 @@
       Cancelar
     </button>
 
-    <button mat-raised-button id="button" class="button-login">
+    <button mat-raised-button id="button" class="button-login" (click)="addProject()">
       <mat-icon>add</mat-icon>
       Crear proyecto
     </button>
