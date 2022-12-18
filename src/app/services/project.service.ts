@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { User } from '../model/user.model'
-import { catchError, Observable, of } from 'rxjs'
+import { catchError, map, Observable, of } from 'rxjs'
 import { Project } from '../model/project.model'
 @Injectable({
   providedIn: 'root',
@@ -24,5 +24,13 @@ export class ProjectService {
 
   addProject(project: Project): Observable<Project[]> {
     return this.http.post<Project[]>(`${this.apiURL}/project`, project, this.httpOptions);
+  }
+
+  uploadFile(files: FileList) {
+    const formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      formData.append('files', files[i], files[i].name);
+    }
+    return this.http.post(`${this.apiURL}/project/upload`, formData).pipe(map((response) => response))
   }
 }

@@ -18,6 +18,8 @@ export class AddProjectCustomerComponent {
   equipmentName: any
   srcResult: any;
   file: any;
+  fileLength: any;
+  files!: FileList;
 
 
   constructor(private dialogRef: MatDialogRef<AddProjectCustomerComponent>, private projectService: ProjectService){}
@@ -30,17 +32,22 @@ export class AddProjectCustomerComponent {
     this.dialogRef.close()
   }
 
-  onFileSelected() {
-    const inputNode: any = document.querySelector('#file');
-  
-    if (typeof (FileReader) !== 'undefined') {
-      const reader = new FileReader();
-  
-      reader.onload = (e: any) => {
-        this.srcResult = e.target.result;
-      };
-  
-      reader.readAsArrayBuffer(inputNode.files[0]);
+  onFileSelected(event: any) {
+    const files = event.target.files;
+    this.fileLength = `${files.length} archivos subidos`;
+    if (files.length === 1) {
+      this.fileLength = `${files.length} archivo subido`;
+    }
+    if (files.length < 6) {
+      this.projectService.uploadFile(files).subscribe((data: any) => {
+        if (data.msg === 'Archivos subidos exitosamente') {
+          alert(data.msg);
+          console.log(data);
+        } 
+      })
+    } else {
+      alert("Solo se permite un máximo de 5 archivos.")
+      this.fileLength = `Subir planos`;
     }
   }
 
@@ -55,6 +62,7 @@ export class AddProjectCustomerComponent {
     }
     this.projectService.addProject(project).subscribe(data => {
       console.log(data);
+      alert("Proyecto agregado exitosamente!");
     });
   }
 }

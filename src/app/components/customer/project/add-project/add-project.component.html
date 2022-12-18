@@ -47,21 +47,23 @@
     class="example-full-width"
     id="mat-form-field"
     class="file"
+    readonly
+    disabled
     (click)="fileInput.click()"
   >
-    <mat-label>Subir plano</mat-label>
     <button mat-icon-button matPrefix>
       <mat-icon>attach_file</mat-icon>
     </button>
-    <!-- <input matInput [(ngModel)]="file" (click)="fileInput.click()" /> -->
-    <input type="text" readonly matInput />
+
+    <input type="text" readonly matInput value="{{ fileLength || 'Subir planos'}}"/>
     <input
       hidden
-      (change)="onFileSelected()"
+      (change)="onFileSelected($event)"
       #fileInput
       type="file"
       id="file"
       multiple
+      accept="application/pdf"
     />
   </mat-form-field>
 
