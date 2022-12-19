@@ -14,4 +14,5 @@ export class Project {
     branchOffice!: string;
     equipmentName!: string;
     description!: string;
+    files!: any[];
 }

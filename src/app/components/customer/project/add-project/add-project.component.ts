@@ -1,53 +1,59 @@
-import { Component } from '@angular/core';
+import { Component } from '@angular/core'
 import { MatDialogRef } from '@angular/material/dialog'
-import { ProjectService } from 'src/app/services/project.service';
+import { ProjectService } from 'src/app/services/project.service'
 import { Project } from '../../../../model/project.model'
-
 
 @Component({
   selector: 'app-add-project',
   templateUrl: './add-project.component.html',
-  styleUrls: ['./add-project.component.css']
+  styleUrls: ['./add-project.component.css'],
 })
 export class AddProjectCustomerComponent {
-  category: any;
-  branchOffice: any;
-  name: any;
-  description: any;
-  descriptionProject: any;
+  category: any
+  branchOffice: any
+  name: any
+  description: any
+  descriptionProject: any
   equipmentName: any
-  srcResult: any;
-  file: any;
-  fileLength: any;
-  files!: FileList;
+  srcResult: any
+  file: any
+  fileLength: any
+  files!: FileList
+  filesProject: any
 
-
-  constructor(private dialogRef: MatDialogRef<AddProjectCustomerComponent>, private projectService: ProjectService){}
+  constructor(
+    private dialogRef: MatDialogRef<AddProjectCustomerComponent>,
+    private projectService: ProjectService,
+  ) {}
   categories: Category[] = [
     { value: 'mecanica-0', viewValue: 'Mecánica' },
     { value: 'electrica-1', viewValue: 'Eléctrica' },
   ]
 
   close() {
-    this.dialogRef.close()
+    this.dialogRef.close();
   }
 
   onFileSelected(event: any) {
-    const files = event.target.files;
-    this.fileLength = `${files.length} archivos subidos`;
+    const files = event.target.files
+    this.fileLength = `${files.length} archivos subidos`
     if (files.length === 1) {
-      this.fileLength = `${files.length} archivo subido`;
+      this.fileLength = `${files.length} archivo subido`
     }
     if (files.length < 6) {
       this.projectService.uploadFile(files).subscribe((data: any) => {
-        if (data.msg === 'Archivos subidos exitosamente') {
+        if (data.msg === 'Archivos subidos exitosamente' && data.length > 0) {
+          this.filesProject = data.filename;
           alert(data.msg);
-          console.log(data);
-        } 
+          return this.filesProject;
+        } else {
+          alert('Solo se permiten archivos pdf.')
+          this.fileLength = `Subir planos`
+        }
       })
     } else {
-      alert("Solo se permite un máximo de 5 archivos.")
-      this.fileLength = `Subir planos`;
+      alert('Solo se permite un máximo de 5 archivos.')
+      this.fileLength = `Subir planos`
     }
   }
 
@@ -58,11 +64,12 @@ export class AddProjectCustomerComponent {
       category: this.category,
       branchOffice: this.branchOffice,
       equipmentName: this.equipmentName,
-      description: this.description
+      description: this.description,
+      files: this.filesProject,
     }
-    this.projectService.addProject(project).subscribe(data => {
-      console.log(data);
-      alert("Proyecto agregado exitosamente!");
+    this.projectService.addProject(project).subscribe((data) => {
+      alert('Proyecto agregado exitosamente!')
+      this.dialogRef.close();
     });
   }
 }

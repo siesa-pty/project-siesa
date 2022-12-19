@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
-import { User } from '../model/user.model'
 import { catchError, map, Observable, of } from 'rxjs'
 import { Project } from '../model/project.model'
 @Injectable({
@@ -19,18 +18,32 @@ export class ProjectService {
   }
 
   getProjects(): Observable<Project[]> {
-    return this.http.get<Project[]>(`${this.apiURL}/project`, this.httpOptions);
+    return this.http.get<Project[]>(`${this.apiURL}/project`, this.httpOptions)
   }
 
   addProject(project: Project): Observable<Project[]> {
-    return this.http.post<Project[]>(`${this.apiURL}/project`, project, this.httpOptions);
+    return this.http.post<Project[]>(
+      `${this.apiURL}/project`,
+      project,
+      this.httpOptions,
+    )
   }
 
   uploadFile(files: FileList) {
-    const formData = new FormData();
+    const formData = new FormData()
     for (let i = 0; i < files.length; i++) {
-      formData.append('files', files[i], files[i].name);
+      formData.append('files', files[i], files[i].name)
     }
-    return this.http.post(`${this.apiURL}/project/upload`, formData).pipe(map((response) => response))
+    return this.http
+      .post(`${this.apiURL}/project/upload`, formData)
+      .pipe(map((response) => response))
+      .pipe(
+        catchError((error) => {
+          if (error.status === 413) {
+            return of(this.errorMsg = `El tamaño máximo por archivo debe ser menor a 5mb.`);
+          } 
+          return of(error.status);
+        }),
+      )
   }
 }

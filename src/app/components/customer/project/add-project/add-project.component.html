@@ -3,22 +3,23 @@
 
   <mat-form-field id="mat-form-field" appearance="fill" class="name">
     <mat-label>Nombre del proyecto</mat-label>
-    <input matInput [(ngModel)]="name" />
+    <input matInput [(ngModel)]="name" required/>
   </mat-form-field>
 
   <mat-form-field
     class="example-full-width"
     id="mat-form-field"
     class="description"
+    required
   >
     <mat-label>Descripción del proyecto</mat-label>
-    <textarea matInput [(ngModel)]="descriptionProject"></textarea>
+    <textarea matInput [(ngModel)]="descriptionProject" required></textarea>
   </mat-form-field>
 
   <mat-form-field appearance="fill" id="mat-form-field" class="category">
     <mat-label>Categoría</mat-label>
-    <mat-select [(ngModel)]="category">
-      <mat-option *ngFor="let category of categories" [value]="category.viewValue">
+    <mat-select [(ngModel)]="category" required>
+      <mat-option *ngFor="let category of categories" [value]="category.viewValue" >
         {{ category.viewValue }}
       </mat-option>
     </mat-select>
@@ -26,21 +27,22 @@
 
   <mat-form-field id="mat-form-field" appearance="fill" class="contractor">
     <mat-label>Sucursal</mat-label>
-    <input matInput [(ngModel)]="branchOffice" />
+    <input matInput [(ngModel)]="branchOffice" required />
   </mat-form-field>
 
   <mat-form-field id="mat-form-field" appearance="fill" class="contractor">
     <mat-label>Nombre del equipo</mat-label>
-    <input matInput [(ngModel)]="equipmentName" />
+    <input matInput [(ngModel)]="equipmentName" required/>
   </mat-form-field>
 
   <mat-form-field
     class="example-full-width"
     id="mat-form-field"
     class="description"
+    required
   >
     <mat-label>Descripción del equipo</mat-label>
-    <textarea matInput [(ngModel)]="description"></textarea>
+    <textarea matInput [(ngModel)]="description" required></textarea>
   </mat-form-field>
 
   <mat-form-field
@@ -50,12 +52,13 @@
     readonly
     disabled
     (click)="fileInput.click()"
+    required
   >
     <button mat-icon-button matPrefix>
       <mat-icon>attach_file</mat-icon>
     </button>
 
-    <input type="text" readonly matInput value="{{ fileLength || 'Subir planos'}}"/>
+    <input type="text" required readonly matInput value="{{ fileLength || 'Subir planos'}}"/>
     <input
       hidden
       (change)="onFileSelected($event)"
@@ -63,6 +66,7 @@
       type="file"
       id="file"
       multiple
+      required
       accept="application/pdf"
     />
   </mat-form-field>
