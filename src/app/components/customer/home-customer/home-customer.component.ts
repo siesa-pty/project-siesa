@@ -14,6 +14,10 @@ import { EditProjectCustomerComponent } from '../project/edit-project/edit-proje
 import { Router } from '@angular/router';
 import { Project } from 'src/app/model/project.model';
 import { ProjectService } from 'src/app/services/project.service';
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+
+(<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-home-customer',
@@ -108,6 +112,20 @@ export class HomeCustomerComponent implements OnInit, AfterViewInit {
 
   openDialogDelete(): void {
     window.confirm('¿Esta seguro que desea eliminar el proyecto?');
+  }
+
+  createPDF() {
+    const pdfDefinition: any = {
+      info: {
+        title: 'Siesa Proyectos',
+        author: 'john doe',
+        subject: 'subject of document',
+        keywords: 'keywords for document',
+      },
+      content: 'This is an sample PDF printed with pdfMake',
+    };
+
+    pdfMake.createPdf(pdfDefinition).open();
   }
 }
 

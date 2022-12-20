@@ -142,7 +142,7 @@
                   <h2>Compañía: {{ element.company }}</h2>
                   <p>Descripción: {{ element.description }}</p>
 
-                  <button mat-raised-button class="demo-button">
+                  <button mat-raised-button class="demo-button" (click)="createPDF()">
                     <mat-icon>download</mat-icon>
                     Descargar
                   </button>
