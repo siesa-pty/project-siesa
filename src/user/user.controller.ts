@@ -5,12 +5,15 @@ import {
   Request,
   UseGuards,
   Get,
+  Param,
+  Delete,
 } from '@nestjs/common';
 
 import { UserService } from './user.service';
 import { LocalAuthGuard } from '../auth/local.auth.guard';
 import { AuthenticatedGuard } from '../auth/authenticated.guard';
 import * as bcrypt from 'bcrypt';
+import { User } from './model/user.model';
 
 @Controller('user')
 export class UserController {
@@ -60,5 +63,15 @@ export class UserController {
   logout(@Request() req): any {
     req.session.destroy();
     return { msg: 'Usted ha cerado sesión.' };
+  }
+
+  @Get('all')
+  async findAll(): Promise<User[]> {
+    return this.userService.findAll();
+  }
+
+  @Delete('trash/:id')
+  async delete(@Param('id') id: string): Promise<void> {
+    await this.userService.deleteOne({ _id: id });
   }
 }
