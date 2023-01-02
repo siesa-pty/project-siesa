@@ -1,0 +1,45 @@
+h1 {
+  font-size: 44px;
+  font-weight: 700;
+}
+
+#filter-buttons {
+  display: flex;
+  align-items: center;
+}
+
+#button-initial {
+  display: flex;
+  margin-left: auto;
+}
+
+.filter {
+  flex: none;
+  min-width: 0;
+}
+
+#notLogin {
+  position: fixed;
+  top: 50%;
+  left: 40%;
+  margin-top: -50px;
+  margin-left: -100px;
+}
+
+#buttonLogin {
+  background-color: #f7ac23;
+  margin-top: 15px;
+  margin-left: 30%;
+}
+
+.default-container {
+  margin: 25px;
+}
+
+.demo-button {
+  margin-left: 25px;
+}
+
+.divisor {
+  margin: 30px;
+}

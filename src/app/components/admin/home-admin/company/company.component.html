@@ -1,0 +1,55 @@
+<div id="content">
+  <h1>Crear Compañia</h1>
+  <form [formGroup]="form" (ngSubmit)="addCompany()" id="content">
+    <mat-form-field id="mat-form-field" appearance="fill" class="name">
+      <mat-label>Nombre de la compañia</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+
+    <mat-form-field
+      class="example-full-width"
+      id="mat-form-field"
+      class="file"
+      readonly
+      disabled
+      (click)="fileInput.click()"
+    >
+      <button mat-icon-button matPrefix>
+        <mat-icon>attach_file</mat-icon>
+      </button>
+
+      <input
+        type="text"
+        readonly
+        matInput
+        value="{{ fileLength || 'Subir logo' }}"
+      />
+      <input
+        hidden
+        (change)="onFileSelected($event)"
+        #fileInput
+        type="file"
+        id="file"
+        accept="image/png, image/jpeg, image/jpg, image/svg, image/webp"
+        max="1"
+      />
+    </mat-form-field>
+
+    <div id="buttons">
+      <button mat-raised-button id="button" (click)="close()" type="button">
+        <mat-icon>cancel</mat-icon>
+        Cancelar
+      </button>
+
+      <button
+        mat-raised-button
+        id="button"
+        class="button-login"
+        [disabled]="form.invalid"
+      >
+        <mat-icon>add</mat-icon>
+        Crear Compañia
+      </button>
+    </div>
+  </form>
+</div>

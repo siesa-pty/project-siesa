@@ -61,14 +61,6 @@
       <!-- <p>Tabla expandible de proyectos</p> -->
       <div class="mat-elevation-z8" id="table">
         <table mat-table [dataSource]="dataSource" multiTemplateDataRows>
-
-          <!-- <ng-container matColumnDef="logo">
-            <th mat-header-cell *matHeaderCellDef>Logo</th>
-            <td mat-cell *matCellDef="let element">
-              <img src="{{ element.logo }}" />
-            </td>
-          </ng-container> -->
-
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Nombre</th>
             <td mat-cell *matCellDef="let element">{{ element.name }}</td>
@@ -76,7 +68,9 @@
 
           <ng-container matColumnDef="sucursal">
             <th mat-header-cell *matHeaderCellDef>Sucursal</th>
-            <td mat-cell *matCellDef="let element">{{ element.sucursal }}</td>
+            <td mat-cell *matCellDef="let element">
+              {{ element.branchOffice }}
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="category">
@@ -109,7 +103,7 @@
               <button mat-icon-button (click)="openDialogUpdate()">
                 <mat-icon>update</mat-icon>
               </button>
-              <button mat-icon-button (click)="openDialogDelete()">
+              <button mat-icon-button (click)="openDialogDelete(element._id)">
                 <mat-icon>delete</mat-icon>
               </button>
             </td>
@@ -141,11 +135,31 @@
                 <div id="content-element">
                   <h2>Compañía: {{ element.company }}</h2>
                   <p>Descripción: {{ element.description }}</p>
+                  <div id="buttons">
+                    <button
+                      mat-raised-button
+                      class="demo-button"
+                      (click)="
+                        createPDF(
+                          element.name,
+                          element.descriptionProject,
+                          element.branchOffice,
+                          element.equipmentName,
+                          element.description,
+                          element.category,
+                          element._id
+                        )
+                      "
+                    >
+                      <mat-icon>download</mat-icon>
+                      Descargar
+                    </button>
 
-                  <button mat-raised-button class="demo-button" (click)="createPDF()">
-                    <mat-icon>download</mat-icon>
-                    Descargar
-                  </button>
+                    <button mat-raised-button class="demo-button" (click)="seePlans(element._id)">
+                      <mat-icon>visibility</mat-icon>
+                      Ver planos
+                    </button>
+                  </div>
                 </div>
               </div>
             </td>

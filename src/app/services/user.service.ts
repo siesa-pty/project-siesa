@@ -35,4 +35,23 @@ export class UserService {
         }),
       )
   }
+
+  addUser(user: User): Observable<User[]> {
+    return this.http.post<User[]>(
+      `${this.apiURL}/user/signup`,
+      user,
+      this.httpOptions,
+    )
+  }
+
+  deleteUser(id: string) {
+    return this.http.delete(
+      `${this.apiURL}/user/trash/${id}`,
+      this.httpOptions,
+    )
+  }
+
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiURL}/user/all`, this.httpOptions)
+  }
 }

@@ -1,1 +1,337 @@
-<p>home-admin works!</p>
+<body *ngIf="login">
+  <app-navbar-customer></app-navbar-customer>
+
+  <mat-tab-group dynamicHeight class="divisor">
+    <mat-tab label="Empresas">
+      <div class="default-container">
+        <div id="filter-buttons">
+          <mat-form-field class="filter">
+            <mat-label>Nombre de la compañia</mat-label>
+            <input
+              matInput
+              placeholder="Buscar.."
+              #input
+              (keyup)="applyFilter($event)"
+              [(ngModel)]="search"
+            />
+          </mat-form-field>
+          <div id="button-initial">
+            <button mat-raised-button (click)="createCompany()">
+              <mat-icon>add</mat-icon>
+              Crear empresa
+            </button>
+            <div class="button-container">
+              <button
+                mat-raised-button
+                class="demo-button"
+                (click)="resetFilters()"
+              >
+                <mat-icon>refresh</mat-icon>
+                Restablecer
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="dataSource">
+            <!-- Logo Column -->
+            <ng-container matColumnDef="logo">
+              <th mat-header-cell *matHeaderCellDef>Logo</th>
+              <td mat-cell *matCellDef="let row">
+                <img
+                  src="assets/company/{{ row.files }}"
+                  alt="{{ row.files }}"
+                  width="110px"
+                  height="40px"
+                />
+              </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Nombre</th>
+              <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="icons">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let row">
+                <button mat-icon-button>
+                  <mat-icon>update</mat-icon>
+                </button>
+                <button mat-icon-button (click)="openDialogDelete(row._id)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+
+          <mat-paginator
+            [pageSizeOptions]="[5, 10, 25, 100]"
+            aria-label="Eliga la página"
+          ></mat-paginator>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Usuarios">
+      <div class="default-container">
+        <div id="filter-buttons">
+          <mat-form-field class="filter">
+            <mat-label>Usuario o compañia</mat-label>
+            <input
+              matInput
+              placeholder="Buscar.."
+              #input
+              (keyup)="applyFilterUserOrCompany($event)"
+              [(ngModel)]="searchUser"
+            />
+          </mat-form-field>
+          <div id="button-initial">
+            <button mat-raised-button (click)="createUser()">
+              <mat-icon>add</mat-icon>
+              Crear usuario
+            </button>
+            <div class="button-container">
+              <button
+                mat-raised-button
+                class="demo-button"
+                (click)="resetFiltersUser()"
+              >
+                <mat-icon>refresh</mat-icon>
+                Restablecer
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="dataSourceUser">
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="username">
+              <th mat-header-cell *matHeaderCellDef>Usuario</th>
+              <td mat-cell *matCellDef="let row">{{ row.username }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="company">
+              <th mat-header-cell *matHeaderCellDef>Compañia</th>
+              <td mat-cell *matCellDef="let row">{{ row.company }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="role">
+              <th mat-header-cell *matHeaderCellDef>Rol</th>
+              <td mat-cell *matCellDef="let row">{{ row.role }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="icons">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let row">
+                <button mat-icon-button>
+                  <mat-icon>update</mat-icon>
+                </button>
+                <button mat-icon-button (click)="openDialogDeleteUser(row._id)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsUser"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsUser"></tr>
+          </table>
+
+          <mat-paginator
+            [pageSizeOptions]="[5, 10, 25, 100]"
+            aria-label="Eliga la página"
+          ></mat-paginator>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Roles / Categorías">
+      <div class="default-container">
+        <mat-tab-group dynamicHeight class="divisor">
+          <mat-tab label="Roles">
+            <div class="default-container">
+              <div id="filter-buttons">
+                <mat-form-field class="filter">
+                  <mat-label>Nombre del rol</mat-label>
+                  <input
+                    matInput
+                    placeholder="Buscar.."
+                    #input
+                    (keyup)="applyFilterRole($event)"
+                    [(ngModel)]="searchRole"
+                  />
+                </mat-form-field>
+                <div id="button-initial">
+                  <button mat-raised-button (click)="createRole()">
+                    <mat-icon>add</mat-icon>
+                    Crear rol
+                  </button>
+                  <div class="button-container">
+                    <button
+                      mat-raised-button
+                      class="demo-button"
+                      (click)="resetFiltersRole()"
+                    >
+                      <mat-icon>refresh</mat-icon>
+                      Restablecer
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSourceRole">
+                  <!-- Logo Column -->
+                  <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef>Id</th>
+                    <td mat-cell *matCellDef="let row">{{ row._id }}</td>
+                  </ng-container>
+
+                  <!-- Name Column -->
+                  <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                    <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="icons">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let row">
+                      <button mat-icon-button>
+                        <mat-icon>update</mat-icon>
+                      </button>
+                      <button
+                        mat-icon-button
+                        (click)="openDialogDeleteRole(row._id)"
+                      >
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </td>
+                  </ng-container>
+
+                  <tr
+                    mat-header-row
+                    *matHeaderRowDef="displayedColumnsRole"
+                  ></tr>
+                  <tr
+                    mat-row
+                    *matRowDef="let row; columns: displayedColumnsRole"
+                  ></tr>
+                </table>
+
+                <mat-paginator
+                  [pageSizeOptions]="[5, 10, 25, 100]"
+                  aria-label="Eliga la página"
+                ></mat-paginator>
+              </div>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Categorías">
+            <div class="default-container">
+              <div id="filter-buttons">
+                <mat-form-field class="filter">
+                  <mat-label>Nombre de la Categoría</mat-label>
+                  <input
+                    matInput
+                    placeholder="Buscar.."
+                    #input
+                    (keyup)="applyFilterCategory($event)"
+                    [(ngModel)]="searchCategory"
+                  />
+                </mat-form-field>
+                <div id="button-initial">
+                  <button mat-raised-button (click)="createCategory()">
+                    <mat-icon>add</mat-icon>
+                    Crear categoría
+                  </button>
+                  <div class="button-container">
+                    <button
+                      mat-raised-button
+                      class="demo-button"
+                      (click)="resetFiltersCategory()"
+                    >
+                      <mat-icon>refresh</mat-icon>
+                      Restablecer
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSourceCategory">
+                  <!-- Logo Column -->
+                  <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef>Id</th>
+                    <td mat-cell *matCellDef="let row">{{ row._id }}</td>
+                  </ng-container>
+
+                  <!-- Name Column -->
+                  <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                    <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="icons">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let row">
+                      <button mat-icon-button>
+                        <mat-icon>update</mat-icon>
+                      </button>
+                      <button
+                        mat-icon-button
+                        (click)="openDialogDeleteCategory(row._id)"
+                      >
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </td>
+                  </ng-container>
+
+                  <tr
+                    mat-header-row
+                    *matHeaderRowDef="displayedColumnsCategory"
+                  ></tr>
+                  <tr
+                    mat-row
+                    *matRowDef="let row; columns: displayedColumnsCategory"
+                  ></tr>
+                </table>
+
+                <mat-paginator
+                  [pageSizeOptions]="[5, 10, 25, 100]"
+                  aria-label="Eliga la página"
+                ></mat-paginator>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Proyectos">
+      <div class="default-container">
+        <p>Toda la información de los proyectos.</p>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Equipos">
+      <div class="default-container">
+        <p>Toda la información de equipos.</p>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</body>
+
+<div *ngIf="!login" id="notLogin">
+  <h1>Debes haber iniciado sesión</h1>
+  <button mat-raised-button id="buttonLogin" (click)="returnToLogin()">
+    <mat-icon>login</mat-icon>
+    Regresar al Login
+  </button>
+</div>

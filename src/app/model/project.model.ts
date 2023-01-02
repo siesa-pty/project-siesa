@@ -5,6 +5,7 @@ export interface Project {
     branchOffice: string;
     equipmentName: string;
     description: string;
+    qr: string;
 }
 
 export class Project {
@@ -15,4 +16,5 @@ export class Project {
     equipmentName!: string;
     description!: string;
     files!: any[];
+    qr!: string;    
 }

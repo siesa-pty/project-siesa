@@ -3,19 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { RegisterCustomerComponent } from './components/admin/customer/register-customer/register-customer.component';
 import { HomeAdminComponent } from './components/admin/home-admin/home-admin.component';
-import { EditCustomerComponent } from './components/admin/customer/edit-customer/edit-customer.component';
-import { SeeCustomersComponent } from './components/admin/customer/see-customers/see-customers.component';
-import { AddProjectComponent } from './components/admin/project/add-project/add-project.component';
-import { EditProjectComponent } from './components/admin/project/edit-project/edit-project.component';
-import { ProjectAdminComponent } from './components/admin/project/project-admin/project-admin.component';
 import { HomeCustomerComponent } from './components/customer/home-customer/home-customer.component';
 import { SeeProjectComponent } from './shared/project/see-project/see-project.component';
 import { LoginComponent } from './shared/login/login.component';
 import { AddProjectCustomerComponent } from './components/customer/project/add-project/add-project.component';
 import { EditProjectCustomerComponent } from './components/customer/project/edit-project/edit-project.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavbarLoginComponent } from './shared/login/navbar-login/navbar-login.component';
 
@@ -35,17 +29,23 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { DeleteProjectComponent } from './components/customer/project/delete-project/delete-project.component';
+import { DialogComponent } from './shared/dialog/dialog.component';
+import { SeeProjectPlansComponent } from './components/customer/project/see-project-plans/see-project-plans.component';
+import { CompanyComponent } from './components/admin/home-admin/company/company.component';
+import { DeleteCompanyComponent } from './components/admin/home-admin/company/delete-company/delete-company.component';
+import { CategoryComponent } from './components/admin/home-admin/category/category.component';
+import { DeleteCategoryComponent } from './components/admin/home-admin/category/delete-category/delete-category.component';
+import { RoleComponent } from './components/admin/home-admin/role/role.component';
+import { DeleteRoleComponent } from './components/admin/home-admin/role/delete-role/delete-role.component';
+import { UserComponent } from './components/admin/home-admin/user/user.component';
+import { DeleteUserComponent } from './components/admin/home-admin/user/delete-user/delete-user.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
     AppComponent,
-    RegisterCustomerComponent,
     HomeAdminComponent,
-    EditCustomerComponent,
-    SeeCustomersComponent,
-    AddProjectComponent,
-    EditProjectComponent,
-    ProjectAdminComponent,
     HomeCustomerComponent,
     SeeProjectComponent,
     LoginComponent,
@@ -54,6 +54,17 @@ import { MatSortModule } from '@angular/material/sort';
     NavbarLoginComponent,
     DialogLoginComponent,
     NavbarCustomerComponent,
+    DeleteProjectComponent,
+    DialogComponent,
+    SeeProjectPlansComponent,
+    CompanyComponent,
+    DeleteCompanyComponent,
+    CategoryComponent,
+    DeleteCategoryComponent,
+    RoleComponent,
+    DeleteRoleComponent,
+    UserComponent,
+    DeleteUserComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,6 +72,7 @@ import { MatSortModule } from '@angular/material/sort';
     BrowserAnimationsModule,
     MatCardModule,
     FormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatToolbarModule,
     MatButtonModule,
@@ -73,7 +85,8 @@ import { MatSortModule } from '@angular/material/sort';
     MatExpansionModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatAutocompleteModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

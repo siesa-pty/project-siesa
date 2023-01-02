@@ -21,10 +21,21 @@ export class ProjectService {
     return this.http.get<Project[]>(`${this.apiURL}/project`, this.httpOptions)
   }
 
+  getProject(id: string): Observable<Project[]> {
+    return this.http.get<Project[]>(`${this.apiURL}/project/find/${id}`, this.httpOptions)
+  }
+
   addProject(project: Project): Observable<Project[]> {
     return this.http.post<Project[]>(
       `${this.apiURL}/project`,
       project,
+      this.httpOptions,
+    )
+  }
+
+  deleteProject(id: string) {
+    return this.http.delete(
+      `${this.apiURL}/project/trash/${id}`,
       this.httpOptions,
     )
   }

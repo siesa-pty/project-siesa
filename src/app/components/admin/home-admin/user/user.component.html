@@ -1,0 +1,56 @@
+<div id="content">
+    
+  <h1>Crear Usuario</h1>
+  <form [formGroup]="form" (ngSubmit)="addUser()" id="content">
+    <mat-form-field id="mat-form-field" appearance="fill" class="name">
+      <mat-label>Usuario</mat-label>
+      <input matInput formControlName="username" />
+    </mat-form-field>
+
+    <mat-form-field id="mat-form-field" appearance="fill" class="name">
+      <mat-label>Contraseña</mat-label>
+      <input matInput formControlName="password" />
+    </mat-form-field>
+
+    <mat-form-field id="mat-form-field" appearance="fill" class="name">
+      <mat-label>Empresa</mat-label>
+      <input
+        matInput
+        formControlName="company"
+        [formControl]="companyControl"
+        placeholder="Elige la compañia"
+        [matAutocomplete]="auto"
+      />
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option
+          *ngFor="let company of filteredCompanies | async"
+          [value]="company.name"
+        >
+          {{ company.name }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field id="mat-form-field" appearance="fill" class="name">
+      <mat-label>Rol</mat-label>
+      <input matInput formControlName="role" />
+    </mat-form-field>
+
+    <div id="buttons">
+      <button mat-raised-button id="button" (click)="close()" type="button">
+        <mat-icon>cancel</mat-icon>
+        Cancelar
+      </button>
+
+      <button
+        mat-raised-button
+        id="button"
+        class="button-login"
+        [disabled]="form.invalid"
+      >
+        <mat-icon>add</mat-icon>
+        Crear Usuario
+      </button>
+    </div>
+  </form>
+</div>
