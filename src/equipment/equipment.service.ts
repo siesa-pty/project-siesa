@@ -1,20 +1,22 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreateProjectDto } from './dto/create-project.dto';
-import { Project, ProjectDocument } from './schemas/project.schema';
+import { CreateEquipmentDto } from './dto/create-equipment.dto';
+import { Equipment, EquipmentDocument } from './schemas/equipment.schema';
 
 @Injectable()
-export class ProjectService {
+export class EquipmentService {
   constructor(
-    @InjectModel(Project.name)
-    private readonly projectModel: Model<ProjectDocument>,
+    @InjectModel(Equipment.name)
+    private readonly equipmentModel: Model<EquipmentDocument>,
   ) {}
 
-  async create(createProjectDto: CreateProjectDto) {
+  async create(createEquipmentDto: CreateEquipmentDto) {
     try {
-      const createdProject = await this.projectModel.create(createProjectDto);
-      return createdProject;
+      const createdEquipment = await this.equipmentModel.create(
+        createEquipmentDto,
+      );
+      return createdEquipment;
     } catch (err) {
       throw new InternalServerErrorException(err);
     }
@@ -28,25 +30,25 @@ export class ProjectService {
     }
   }
 
-  async findAll(): Promise<Project[]> {
+  async findAll(): Promise<Equipment[]> {
     try {
-      return this.projectModel.find().exec();
+      return this.equipmentModel.find().exec();
     } catch (err) {
       throw new InternalServerErrorException(err);
     }
   }
 
-  async findOne(id: string): Promise<Project> {
+  async findOne(id: string): Promise<Equipment> {
     try {
-      return this.projectModel.findOne({ _id: id });
+      return this.equipmentModel.findOne({ _id: id });
     } catch (err) {
       throw new InternalServerErrorException(err);
     }
   }
 
-  async findCompanies(company: string): Promise<Project[]> {
+  async findProjects(projectName: string): Promise<Equipment[]> {
     try {
-      return this.projectModel.find({ company });
+      return this.equipmentModel.find({ projectName });
     } catch (err) {
       throw new InternalServerErrorException(err);
     }
@@ -54,7 +56,7 @@ export class ProjectService {
 
   async deleteOne(query: any): Promise<void> {
     try {
-      await this.projectModel.deleteOne(query).exec();
+      await this.equipmentModel.deleteOne(query).exec();
     } catch (err) {
       throw new InternalServerErrorException(err);
     }

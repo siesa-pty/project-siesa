@@ -3,13 +3,14 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ObjectId } from 'mongodb';
 import { HydratedDocument } from 'mongoose';
 
-export type ProjectDocument = HydratedDocument<Project>;
+export type EquipmentDocument = HydratedDocument<Equipment>;
 
 @Schema()
-export class Project {
+export class Equipment {
+
   @Prop({ type: String, default: () => new ObjectId().toHexString() })
   _id: string;
-
+  
   @Prop({
     type: String,
     unique: true,
@@ -17,22 +18,10 @@ export class Project {
   name: string;
 
   @Prop()
-  descriptionProject: string;
+  description: string;
 
   @Prop()
-  category: string;
-
-  @Prop()
-  branchOffice: string;
-
-  @Prop()
-  company: string;
-
-  @Prop()
-  endDate: string;
-
-  @Prop()
-  supplier: string;
+  projectName: string;
 
   @Prop()
   files: any[];
@@ -41,9 +30,9 @@ export class Project {
   qr: string;
 }
 
-export const ProjectSchema = SchemaFactory.createForClass(Project);
+export const EquipmentSchema = SchemaFactory.createForClass(Equipment);
 
-ProjectSchema.pre('save', function (next) {
+EquipmentSchema.pre('save', function(next) {
   this._id = this._id.toString();
   next();
 });

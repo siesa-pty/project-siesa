@@ -7,6 +7,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { CompanyModule } from './company/company.module';
 import { RoleModule } from './role/role.module';
 import { CategoryModule } from './category/category.module';
+import { EquipmentModule } from './equipment/equipment.module';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
@@ -32,6 +33,7 @@ require('dotenv').config();
     CompanyModule,
     RoleModule,
     CategoryModule,
+    EquipmentModule,
   ],
   controllers: [],
   providers: [],

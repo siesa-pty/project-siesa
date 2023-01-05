@@ -8,21 +8,21 @@ import {
   Delete,
   Param,
 } from '@nestjs/common';
-import { ProjectService } from './project.service';
-import { CreateProjectDto } from './dto/create-project.dto';
-import { Project } from './schemas/project.schema';
+import { EquipmentService } from './equipment.service';
+import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { v4 as uuid } from 'uuid';
+import { Equipment } from './schemas/equipment.schema';
 
-@Controller('project')
-export class ProjectController {
-  constructor(private readonly projectService: ProjectService) {}
+@Controller('equipment')
+export class EquipmentController {
+  constructor(private readonly equipmentService: EquipmentService) {}
   arr: string[] = [];
   @Post()
-  create(@Body() createProjectDto: CreateProjectDto) {
-    return this.projectService.create(createProjectDto);
+  create(@Body() createEquipmentDto: CreateEquipmentDto) {
+    return this.equipmentService.create(createEquipmentDto);
   }
 
   @Post('upload')
@@ -39,7 +39,7 @@ export class ProjectController {
         }
       },
       storage: diskStorage({
-        destination: '../frontend/src/assets/project',
+        destination: '../frontend/src/assets/equipment',
         filename(req, file, callback) {
           const uniqueSuffix = Date.now() + '-' + uuid();
           const ext = extname(file.originalname);
@@ -62,22 +62,22 @@ export class ProjectController {
   }
 
   @Get()
-  async findAll(): Promise<Project[]> {
-    return this.projectService.findAll();
+  async findAll(): Promise<Equipment[]> {
+    return this.equipmentService.findAll();
   }
 
   @Get('find/:id')
-  async findOne(@Param('id') id: string): Promise<Project> {
-    return this.projectService.findOne(id);
+  async findOne(@Param('id') id: string): Promise<Equipment> {
+    return this.equipmentService.findOne(id);
   }
 
-  @Post('find/company')
-  async findCompanies(@Body('company') company: string): Promise<Project[]> {
-    return this.projectService.findCompanies(company);
+  @Post('find/project')
+  async findCompanies(@Body('projectName') projectName: string): Promise<Equipment[]> {
+    return this.equipmentService.findProjects(projectName);
   }
 
   @Delete('trash/:id')
   async delete(@Param('id') id: string): Promise<void> {
-    await this.projectService.deleteOne({ _id: id });
+    await this.equipmentService.deleteOne({ _id: id });
   }
 }

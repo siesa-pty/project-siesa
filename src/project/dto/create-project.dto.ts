@@ -4,7 +4,9 @@ export class CreateProjectDto {
   readonly descriptionProject: string;
   readonly category: string;
   readonly branchOffice: string;
-  readonly equipmentName: string;
-  readonly description: string;
+  readonly company: string;
+  readonly endDate: string;
+  readonly supplier: string;
   readonly files: any[];
+  readonly qr: string;
 }
