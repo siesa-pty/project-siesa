@@ -30,6 +30,8 @@ export class DialogLoginComponent {
         this.router.navigate(['/home-customer']);
         this.dialogRef.close();
         localStorage.setItem('userActive', JSON.stringify(data.User.userName));
+        localStorage.setItem('company', JSON.stringify(data.User.company));
+        localStorage.setItem('role', JSON.stringify(data.User.role));
       } else {
        window.alert("Usuario o contraseña incorrecto.")
       }

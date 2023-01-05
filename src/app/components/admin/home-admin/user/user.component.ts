@@ -7,6 +7,8 @@ import { UserService } from 'src/app/services/user.service';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { Role } from 'src/app/model/role.model';
+import { RoleService } from 'src/app/services/role.service';
 
 @Component({
   selector: 'app-user',
@@ -16,14 +18,14 @@ import { Observable } from 'rxjs';
 export class UserComponent implements OnInit {
   form: FormGroup;
   filteredCompanies!: Observable<Company[]>;
-  companyControl = new FormControl();
-  companies!: Company[];
+  filteredRoles!: Observable<Role[]>;
 
   constructor(
     private dialogRef: MatDialogRef<UserComponent>,
     private userService: UserService,
     public dialog: MatDialog,
-    private companyService: CompanyService
+    private companyService: CompanyService,
+    private roleService: RoleService,
   ) {
     this.form = new FormGroup({
       username: new FormControl('', Validators.required),
@@ -35,15 +37,33 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     this.companyService.getCompanies().subscribe((companies) => {
-      this.companies = companies;
-      this.filteredCompanies = this.companyControl.valueChanges.pipe(
+      this.filteredCompanies = this.form.controls['company'].valueChanges.pipe(
         startWith(''),
-        map((value) => this.filterCompanies(value))
+        map((value) => this.filterCompanies(value, companies))
+      );
+    });
+
+    this.roleService.getRoles().subscribe((roles) => {
+      this.filteredRoles = this.form.controls['role'].valueChanges.pipe(
+        startWith(''),
+        map((value) => this.filterRoles(value, roles))
       );
     });
   }
 
-  private filterCompanies(value: string): Company[] { const filterValue = value.toLowerCase(); return this.companies.filter(company => company.name.toLowerCase().includes(filterValue)); }
+  private filterCompanies(value: string, companies: Company[]): Company[] {
+    const filterValue = value.toLowerCase();
+    return companies.filter(
+      (company) => company.name.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
+
+  private filterRoles(value: string, roles: Role[]): Role[] {
+    const filterValue = value.toLowerCase();
+    return roles.filter(
+      (role) => role.name.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
 
   close() {
     this.dialogRef.close();

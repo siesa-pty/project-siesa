@@ -7,13 +7,15 @@ import { DialogComponent } from 'src/app/shared/dialog/dialog.component'
 import { CategoryService } from 'src/app/services/category.service'
 import { Category } from 'src/app/model/category.model'
 import { format } from 'date-fns';
+import { CompanyService } from 'src/app/services/company.service'
+import { Company } from 'src/app/model/company.model'
 
 @Component({
-  selector: 'app-add-project',
-  templateUrl: './add-project.component.html',
-  styleUrls: ['./add-project.component.css'],
+  selector: 'app-project',
+  templateUrl: './project.component.html',
+  styleUrls: ['./project.component.css']
 })
-export class AddProjectCustomerComponent implements OnInit{
+export class ProjectComponent implements OnInit{
   form: FormGroup
   srcResult: any
   file: any
@@ -22,15 +24,18 @@ export class AddProjectCustomerComponent implements OnInit{
   filesProject: any
   qrCodeImage!: any
   categories: any = new Category();
+  companies: any = new Company();
   names: any;
   endDate!: Date;
   company: any = localStorage.getItem('company');
+  companyNames: any;
   
   constructor(
-    private dialogRef: MatDialogRef<AddProjectCustomerComponent>,
+    private dialogRef: MatDialogRef<ProjectComponent>,
     private projectService: ProjectService,
     private categoryService: CategoryService,
     public dialog: MatDialog,
+    private companyService: CompanyService,
   ) {
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
@@ -38,11 +43,13 @@ export class AddProjectCustomerComponent implements OnInit{
       category: new FormControl('', Validators.required),
       branchOffice: new FormControl('', Validators.required),
       endDate: new FormControl('', Validators.required),
+      company: new FormControl('', Validators.required),
       supplier: new FormControl('', Validators.required),
     })
   }
   ngOnInit(): void {
     this.getCategories();
+    this.getCompanies();
   }
 
   close() {
@@ -53,6 +60,13 @@ export class AddProjectCustomerComponent implements OnInit{
     this.categoryService.getCategories().subscribe((res: any) => {
       this.categories.data = res;
       this.names = this.categories.data.map((category: any) => category.name);
+    });
+  }
+
+  getCompanies() {
+    this.companyService.getCompanies().subscribe((res: any) => {
+      this.companies.data = res;
+      this.companyNames = this.companies.data.map((company: any) => company.name);
     });
   }
 

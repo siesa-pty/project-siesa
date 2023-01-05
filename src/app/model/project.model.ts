@@ -3,8 +3,9 @@ export interface Project {
     descriptionProject: string;
     category: string;
     branchOffice: string;
-    equipmentName: string;
-    description: string;
+    company: string;
+    endDate: string;
+    supplier: string;
     qr: string;
 }
 
@@ -13,8 +14,9 @@ export class Project {
     descriptionProject!: string;
     category!: string;
     branchOffice!: string;
-    equipmentName!: string;
-    description!: string;
+    company!: string;
+    endDate!: string;
+    supplier!: string;
     files!: any[];
     qr!: string;    
 }

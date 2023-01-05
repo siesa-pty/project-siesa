@@ -1,5 +1,4 @@
 <div id="content">
-    
   <h1>Crear Usuario</h1>
   <form [formGroup]="form" (ngSubmit)="addUser()" id="content">
     <mat-form-field id="mat-form-field" appearance="fill" class="name">
@@ -17,11 +16,10 @@
       <input
         matInput
         formControlName="company"
-        [formControl]="companyControl"
         placeholder="Elige la compañia"
-        [matAutocomplete]="auto"
+        [matAutocomplete]="companyAuto"
       />
-      <mat-autocomplete #auto="matAutocomplete">
+      <mat-autocomplete #companyAuto="matAutocomplete">
         <mat-option
           *ngFor="let company of filteredCompanies | async"
           [value]="company.name"
@@ -32,8 +30,21 @@
     </mat-form-field>
 
     <mat-form-field id="mat-form-field" appearance="fill" class="name">
-      <mat-label>Rol</mat-label>
-      <input matInput formControlName="role" />
+      <mat-label>Roles</mat-label>
+      <input
+        matInput
+        formControlName="role"
+        placeholder="Elige su rol"
+        [matAutocomplete]="roleAuto"
+      />
+      <mat-autocomplete #roleAuto="matAutocomplete">
+        <mat-option
+          *ngFor="let role of filteredRoles | async"
+          [value]="role.name"
+        >
+          {{ role.name }}
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
 
     <div id="buttons">

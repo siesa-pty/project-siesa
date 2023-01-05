@@ -13,7 +13,9 @@ import * as pdfMake from 'pdfmake/build/pdfmake'
 import * as pdfFonts from 'pdfmake/build/vfs_fonts'
 import { DeleteProjectComponent } from '../project/delete-project/delete-project.component'
 
-;(<any>pdfMake).vfs = pdfFonts.pdfMake.vfs
+;import { Category } from 'src/app/model/category.model'
+import { CategoryService } from 'src/app/services/category.service'
+(<any>pdfMake).vfs = pdfFonts.pdfMake.vfs
 
 @Component({
   selector: 'app-home-customer',
@@ -31,14 +33,11 @@ import { DeleteProjectComponent } from '../project/delete-project/delete-project
   ],
 })
 export class HomeCustomerComponent implements OnInit, AfterViewInit {
-  categories: Category[] = [
-    { value: 'mecanica-0', viewValue: 'Mecánica' },
-    { value: 'electrica-1', viewValue: 'Eléctrica' },
-  ]
   constructor(
     public dialog: MatDialog,
     private router: Router,
     private projectService: ProjectService,
+    private categoryService: CategoryService,
   ) {}
 
   project: Project[] = []
@@ -51,10 +50,15 @@ export class HomeCustomerComponent implements OnInit, AfterViewInit {
   search: any
   category: any
   login = localStorage.getItem('userActive');
+  company: any = localStorage.getItem('company');
+  role = localStorage.getItem('role');
   @ViewChild(MatPaginator) paginator!: MatPaginator
+  categories: any = new Category();
+  names: any;
 
   ngOnInit() {
-    this.getProjects()
+    this.getProjects();
+    this.getCategories();
     this.dataSource.filterPredicate = function (data, filter: string): boolean {
       return (
         data.category.toLowerCase().includes(filter) ||
@@ -67,8 +71,15 @@ export class HomeCustomerComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator
   }
 
+  getCategories() {
+    this.categoryService.getCategories().subscribe((res: any) => {
+      this.categories.data = res;
+      this.names = this.categories.data.map((category: any) => category.name);
+    });
+  }
+
   getProjects() {
-    this.projectService.getProjects().subscribe((res) => {
+    this.projectService.getProjectByCompany(JSON.parse(this.company)).subscribe((res) => {
       this.dataSource.data = res
     })
   }
@@ -151,8 +162,6 @@ export class HomeCustomerComponent implements OnInit, AfterViewInit {
     name: string,
     descriptionProject: string,
     branchOffice: string,
-    equipmentName: string,
-    description: string,
     category: string,
     id: string,
   ) {
@@ -177,8 +186,7 @@ export class HomeCustomerComponent implements OnInit, AfterViewInit {
                 { text: 'Información del Proyecto', bold: true, fontSize: 18 },
               ],
               [name, category],
-              [descriptionProject, equipmentName],
-              [branchOffice, description],
+              [descriptionProject, branchOffice],
             ],
           },
         },
@@ -197,9 +205,4 @@ export class HomeCustomerComponent implements OnInit, AfterViewInit {
     }
     pdfMake.createPdf(pdfDefinition).open()
   }
-}
-
-interface Category {
-  value: string
-  viewValue: string
 }

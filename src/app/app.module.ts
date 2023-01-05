@@ -41,6 +41,11 @@ import { DeleteRoleComponent } from './components/admin/home-admin/role/delete-r
 import { UserComponent } from './components/admin/home-admin/user/user.component';
 import { DeleteUserComponent } from './components/admin/home-admin/user/delete-user/delete-user.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { ProjectComponent } from './components/admin/home-admin/project/project.component';
+import { EquipmentComponent } from './components/admin/home-admin/equipment/equipment.component';
+import { DeleteEquipmentComponent } from './components/admin/home-admin/equipment/delete-equipment/delete-equipment.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +70,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     DeleteRoleComponent,
     UserComponent,
     DeleteUserComponent,
+    ProjectComponent,
+    EquipmentComponent,
+    DeleteEquipmentComponent,
   ],
   imports: [
     BrowserModule,
@@ -87,6 +95,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatPaginatorModule,
     MatSortModule,
     MatAutocompleteModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -71,6 +71,7 @@
           </table>
 
           <mat-paginator
+            #companyPaginator
             [pageSizeOptions]="[5, 10, 25, 100]"
             aria-label="Eliga la página"
           ></mat-paginator>
@@ -111,7 +112,6 @@
 
         <div class="mat-elevation-z8">
           <table mat-table [dataSource]="dataSourceUser">
-
             <!-- Name Column -->
             <ng-container matColumnDef="username">
               <th mat-header-cell *matHeaderCellDef>Usuario</th>
@@ -141,10 +141,14 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumnsUser"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumnsUser"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedColumnsUser"
+            ></tr>
           </table>
 
           <mat-paginator
+            #userPaginator
             [pageSizeOptions]="[5, 10, 25, 100]"
             aria-label="Eliga la página"
           ></mat-paginator>
@@ -226,6 +230,7 @@
                 </table>
 
                 <mat-paginator
+                  #rolePaginator
                   [pageSizeOptions]="[5, 10, 25, 100]"
                   aria-label="Eliga la página"
                 ></mat-paginator>
@@ -304,6 +309,7 @@
                 </table>
 
                 <mat-paginator
+                  #categoryPaginator
                   [pageSizeOptions]="[5, 10, 25, 100]"
                   aria-label="Eliga la página"
                 ></mat-paginator>
@@ -316,13 +322,325 @@
 
     <mat-tab label="Proyectos">
       <div class="default-container">
-        <p>Toda la información de los proyectos.</p>
+        <div id="filter-buttons">
+          <mat-form-field class="filter">
+            <mat-label>Proyectos</mat-label>
+            <input
+              matInput
+              placeholder="Buscar.."
+              #input
+              (keyup)="applyFilterProject($event)"
+              [(ngModel)]="searchProject"
+            />
+          </mat-form-field>
+          <div id="button-initial">
+            <button mat-raised-button (click)="createProject()">
+              <mat-icon>add</mat-icon>
+              Crear proyecto
+            </button>
+            <div class="button-container">
+              <button
+                mat-raised-button
+                class="demo-button"
+                (click)="resetFiltersProject()"
+              >
+                <mat-icon>refresh</mat-icon>
+                Restablecer
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Added by Hector -->
+        <!-- <p>Tabla expandible de proyectos</p> -->
+        <div class="mat-elevation-z8" id="table">
+          <table
+            mat-table
+            [dataSource]="dataSourceProject"
+            multiTemplateDataRows
+          >
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Nombre</th>
+              <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="branchOffice">
+              <th mat-header-cell *matHeaderCellDef>Sucursal</th>
+              <td mat-cell *matCellDef="let row">
+                {{ row.branchOffice }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="category">
+              <th mat-header-cell *matHeaderCellDef>Categoría</th>
+              <td mat-cell *matCellDef="let row">{{ row.category }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="expand">
+              <th mat-header-cell *matHeaderCellDef aria-label="row actions">
+                &nbsp;
+              </th>
+
+              <td mat-cell *matCellDef="let row">
+                <button
+                  mat-icon-button
+                  aria-label="expand row"
+                  (click)="
+                    expandedElement = expandedElement === row ? null : row;
+                    $event.stopPropagation()
+                  "
+                >
+                  <mat-icon *ngIf="expandedElement !== row">
+                    keyboard_arrow_down
+                  </mat-icon>
+                  <mat-icon *ngIf="expandedElement === row">
+                    keyboard_arrow_up
+                  </mat-icon>
+                </button>
+                <button mat-icon-button>
+                  <mat-icon>update</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  (click)="openDialogDeleteProject(row._id)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+            <ng-container matColumnDef="expandedDetail">
+              <td
+                mat-cell
+                *matCellDef="let row"
+                [attr.colspan]="columnsToDisplayWithExpand.length"
+              >
+                <div
+                  class="example-element-detail"
+                  [@detailExpand]="
+                    row == expandedElement ? 'expanded' : 'collapsed'
+                  "
+                >
+                  <div class="example-element-diagram">
+                    <div class="example-element-position">
+                      <img
+                        src="{{ row.qr }}"
+                        alt="qr"
+                        width="100"
+                        height="100"
+                      />
+                    </div>
+                  </div>
+                  <div id="content-element">
+                    <!-- Added by Hector -->
+                    <p>Empresa: {{ row.company }}</p>
+                    <p>Descripción: {{ row.descriptionProject }}</p>
+                    <p>Proveedor: {{ row.supplier }}</p>
+                    <p>Fecha de finalización: {{ row.endDate }}</p>
+                    <div id="buttons">
+                      <button
+                        mat-raised-button
+                        class="demo-button"
+                        (click)="
+                          createPDF(
+                            row.name,
+                            row.descriptionProject,
+                            row.branchOffice,
+                            row.category,
+                            row.supplier,
+                            row.company,
+                            row.endDate,
+                            row._id
+                          )
+                        "
+                      >
+                        <mat-icon>download</mat-icon>
+                        Descargar
+                      </button>
+
+                      <button
+                        mat-raised-button
+                        class="demo-button"
+                        (click)="seePlans(row._id)"
+                      >
+                        <mat-icon>visibility</mat-icon>
+                        Ver planos
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr
+              mat-header-row
+              *matHeaderRowDef="columnsToDisplayWithExpand"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: columnsToDisplayWithExpand"
+              class="example-element-row"
+              [class.example-expanded-row]="expandedElement === row"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: ['expandedDetail']"
+              class="example-detail-row"
+            ></tr>
+          </table>
+          <mat-paginator
+            [pageSizeOptions]="[5, 10, 25, 100]"
+            showFirstLastButtons
+            aria-label="Seleccionar paginas"
+          ></mat-paginator>
+        </div>
       </div>
     </mat-tab>
 
     <mat-tab label="Equipos">
       <div class="default-container">
-        <p>Toda la información de equipos.</p>
+        <div id="filter-buttons">
+          <mat-form-field class="filter">
+            <mat-label>Equipos</mat-label>
+            <input
+              matInput
+              placeholder="Buscar.."
+              #input
+              (keyup)="applyFilterEquipment($event)"
+              [(ngModel)]="searchEquipment"
+            />
+          </mat-form-field>
+          <div id="button-initial">
+            <button mat-raised-button (click)="createEquipment()">
+              <mat-icon>add</mat-icon>
+              Crear equipo
+            </button>
+            <div class="button-container">
+              <button
+                mat-raised-button
+                class="demo-button"
+                (click)="resetFiltersEquipment()"
+              >
+                <mat-icon>refresh</mat-icon>
+                Restablecer
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- <p>Tabla expandible de equipos</p> -->
+        <div class="mat-elevation-z8" id="table">
+          <table mat-table multiTemplateDataRows>
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Nombre del equipo</th>
+              <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="projectName">
+              <th mat-header-cell *matHeaderCellDef>Nombre del proyecto</th>
+              <td mat-cell *matCellDef="let row">
+                {{ row.projectName }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="expand">
+              <th mat-header-cell *matHeaderCellDef aria-label="row actions">
+                &nbsp;
+              </th>
+
+              <td mat-cell *matCellDef="let row">
+                <button
+                  mat-icon-button
+                  aria-label="expand row"
+                  (click)="
+                    expandedElement = expandedElement === row ? null : row;
+                    $event.stopPropagation()
+                  "
+                >
+                  <mat-icon *ngIf="expandedElement !== row">
+                    keyboard_arrow_down
+                  </mat-icon>
+                  <mat-icon *ngIf="expandedElement === row">
+                    keyboard_arrow_up
+                  </mat-icon>
+                </button>
+                <button mat-icon-button>
+                  <mat-icon>update</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  (click)="openDialogDeleteEquipment(row._id)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+            <ng-container matColumnDef="expandedDetail">
+              <td
+                mat-cell
+                *matCellDef="let row"
+                [attr.colspan]="columnsToDisplayWithExpandEquipment.length"
+              >
+                <div
+                  class="example-element-detail"
+                  [@detailExpand]="
+                    row == expandedElement ? 'expanded' : 'collapsed'
+                  "
+                >
+                  <div class="example-element-diagram">
+                    <div class="example-element-position">
+                      <img
+                        src="{{ row.qr }}"
+                        alt="qr"
+                        width="100"
+                        height="100"
+                      />
+                    </div>
+                  </div>
+                  <div id="content-element">
+                    <p>Descripción: {{ row.description }}</p>
+
+                    <div id="buttons">
+                      <button mat-raised-button class="demo-button">
+                        <mat-icon>download</mat-icon>
+                        Descargar
+                      </button>
+
+                      <button mat-raised-button class="demo-button">
+                        <mat-icon>visibility</mat-icon>
+                        Ver planos
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr
+              mat-header-row
+              *matHeaderRowDef="columnsToDisplayWithExpandEquipment"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: columnsToDisplayWithExpandEquipment"
+              class="example-element-row"
+              [class.example-expanded-row]="expandedElement === row"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: ['expandedDetail']"
+              class="example-detail-row"
+            ></tr>
+          </table>
+          <mat-paginator
+            [pageSizeOptions]="[5, 10, 25, 100]"
+            showFirstLastButtons
+            aria-label="Seleccionar paginas"
+          ></mat-paginator>
+        </div>
       </div>
     </mat-tab>
   </mat-tab-group>

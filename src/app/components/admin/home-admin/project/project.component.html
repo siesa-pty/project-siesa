@@ -1,0 +1,106 @@
+<div id="content">
+    <h1>Crear Proyecto</h1>
+    <form [formGroup]="form" (ngSubmit)="addProject()" id="content">
+      <mat-form-field id="mat-form-field" appearance="fill" class="name">
+        <mat-label>Nombre del proyecto</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+  
+      <mat-form-field
+        class="example-full-width"
+        id="mat-form-field"
+        class="description"
+      >
+        <mat-label>Descripción del proyecto</mat-label>
+        <textarea matInput formControlName="descriptionProject"></textarea>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" id="mat-form-field" class="category">
+        <mat-label>Categoría</mat-label>
+        <mat-select formControlName="category">
+          <mat-option *ngFor="let category of names" [value]="category">
+            {{ category }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" id="mat-form-field" class="company">
+        <mat-label>Compañia</mat-label>
+        <mat-select formControlName="company">
+          <mat-option *ngFor="let company of companyNames" [value]="company">
+            {{ company }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field id="mat-form-field" appearance="fill" class="contractor">
+        <mat-label>Sucursal</mat-label>
+        <input matInput formControlName="branchOffice" />
+      </mat-form-field>
+  
+      <mat-form-field id="mat-form-field" appearance="fill" class="endDate">
+        <mat-label>Fecha de finalización</mat-label>
+        <input matInput [matDatepicker]="datepicker" formControlName="endDate">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
+        <mat-datepicker #datepicker>
+          <mat-datepicker-actions>
+            <button mat-button matDatepickerCancel>Cancelar</button>
+            <button mat-raised-button color="primary" matDatepickerApply>Aplicar</button>
+          </mat-datepicker-actions>
+        </mat-datepicker>
+      </mat-form-field>
+  
+      <mat-form-field id="mat-form-field" appearance="fill" class="supplier">
+        <mat-label>Proveedor</mat-label>
+        <input matInput formControlName="supplier" />
+      </mat-form-field>
+  
+      <mat-form-field
+        class="example-full-width"
+        id="mat-form-field"
+        class="file"
+        readonly
+        disabled
+        (click)="fileInput.click()"
+      >
+        <button mat-icon-button matPrefix>
+          <mat-icon>attach_file</mat-icon>
+        </button>
+  
+        <input
+          type="text"
+          readonly
+          matInput
+          value="{{ fileLength || 'Subir planos' }}"
+        />
+        <input
+          hidden
+          (change)="onFileSelected($event)"
+          #fileInput
+          type="file"
+          id="file"
+          multiple
+          accept="application/pdf"
+        />
+      </mat-form-field>
+  
+      <div id="buttons">
+        <button mat-raised-button id="button" (click)="close()" type="button">
+          <mat-icon>cancel</mat-icon>
+          Cancelar
+        </button>
+  
+        <button
+          mat-raised-button
+          id="button"
+          class="button-login"
+          [disabled]="form.invalid"
+        >
+          <mat-icon>add</mat-icon>
+          Crear proyecto
+        </button>
+      </div>
+    </form>
+  </div>
+  

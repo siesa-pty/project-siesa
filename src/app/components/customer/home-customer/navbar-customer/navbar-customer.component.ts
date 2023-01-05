@@ -12,6 +12,8 @@ export class NavbarCustomerComponent {
 
   logout() {
     localStorage.removeItem('userActive');
+    localStorage.removeItem('company');
+    localStorage.removeItem('role');
     this.router.navigate(['/login']) 
   }
 

@@ -18,11 +18,8 @@
     <mat-form-field appearance="fill" id="mat-form-field" class="category">
       <mat-label>Categoría</mat-label>
       <mat-select formControlName="category">
-        <mat-option
-          *ngFor="let category of categories"
-          [value]="category.viewValue"
-        >
-          {{ category.viewValue }}
+        <mat-option *ngFor="let category of names" [value]="category">
+          {{ category }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -32,18 +29,22 @@
       <input matInput formControlName="branchOffice" />
     </mat-form-field>
 
-    <mat-form-field id="mat-form-field" appearance="fill" class="contractor">
-      <mat-label>Nombre del equipo</mat-label>
-      <input matInput formControlName="equipmentName" />
+    <mat-form-field id="mat-form-field" appearance="fill" class="endDate">
+      <mat-label>Fecha de finalización</mat-label>
+      <input matInput [matDatepicker]="datepicker" formControlName="endDate">
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
+      <mat-datepicker #datepicker>
+        <mat-datepicker-actions>
+          <button mat-button matDatepickerCancel>Cancelar</button>
+          <button mat-raised-button color="primary" matDatepickerApply>Aplicar</button>
+        </mat-datepicker-actions>
+      </mat-datepicker>
     </mat-form-field>
 
-    <mat-form-field
-      class="example-full-width"
-      id="mat-form-field"
-      class="description"
-    >
-      <mat-label>Descripción del equipo</mat-label>
-      <textarea matInput formControlName="description"></textarea>
+    <mat-form-field id="mat-form-field" appearance="fill" class="supplier">
+      <mat-label>Proveedor</mat-label>
+      <input matInput formControlName="supplier" />
     </mat-form-field>
 
     <mat-form-field

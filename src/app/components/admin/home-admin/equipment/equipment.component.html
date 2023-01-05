@@ -1,0 +1,76 @@
+<div id="content">
+    <h1>Crear Equipo</h1>
+    <form [formGroup]="form" (ngSubmit)="addEquipment()" id="content">
+      <mat-form-field id="mat-form-field" appearance="fill" class="name">
+        <mat-label>Nombre del equipo</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+  
+      <mat-form-field
+        class="example-full-width"
+        id="mat-form-field"
+        class="description"
+      >
+        <mat-label>Descripción del equipo</mat-label>
+        <textarea matInput formControlName="description"></textarea>
+      </mat-form-field>
+  
+
+      <mat-form-field appearance="fill" id="mat-form-field" class="project">
+        <mat-label>Nombre del projecto</mat-label>
+        <mat-select formControlName="projectName">
+          <mat-option *ngFor="let project of projectNames" [value]="projectNames">
+            {{ project }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+  
+      <mat-form-field
+        class="example-full-width"
+        id="mat-form-field"
+        class="file"
+        readonly
+        disabled
+        (click)="fileInput.click()"
+      >
+        <button mat-icon-button matPrefix>
+          <mat-icon>attach_file</mat-icon>
+        </button>
+  
+        <input
+          type="text"
+          readonly
+          matInput
+          value="{{ fileLength || 'Subir planos' }}"
+        />
+        <input
+          hidden
+          (change)="onFileSelected($event)"
+          #fileInput
+          type="file"
+          id="file"
+          multiple
+          accept="application/pdf"
+        />
+      </mat-form-field>
+  
+      <div id="buttons">
+        <button mat-raised-button id="button" (click)="close()" type="button">
+          <mat-icon>cancel</mat-icon>
+          Cancelar
+        </button>
+  
+        <button
+          mat-raised-button
+          id="button"
+          class="button-login"
+          [disabled]="form.invalid"
+        >
+          <mat-icon>add</mat-icon>
+          Crear equipo
+        </button>
+      </div>
+    </form>
+  </div>
+  

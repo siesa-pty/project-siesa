@@ -16,11 +16,11 @@
             <mat-label>Categoría</mat-label>
             <mat-select [value]="selected" [(ngModel)]="category">
               <mat-option
-                *ngFor="let category of categories"
-                [value]="category.value"
-                (click)="filterCategory(category.viewValue)"
+                *ngFor="let category of names"
+                [value]="category"
+                (click)="filterCategory(category)"
               >
-                {{ category.viewValue }}
+                {{ category }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -134,7 +134,7 @@
                 </div>
                 <div id="content-element">
                   <h2>Compañía: {{ element.company }}</h2>
-                  <p>Descripción: {{ element.description }}</p>
+                  <p>Descripción: {{ element.descriptionProject }}</p>
                   <div id="buttons">
                     <button
                       mat-raised-button
@@ -144,8 +144,6 @@
                           element.name,
                           element.descriptionProject,
                           element.branchOffice,
-                          element.equipmentName,
-                          element.description,
                           element.category,
                           element._id
                         )

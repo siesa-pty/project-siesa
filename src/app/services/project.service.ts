@@ -25,6 +25,10 @@ export class ProjectService {
     return this.http.get<Project[]>(`${this.apiURL}/project/find/${id}`, this.httpOptions)
   }
 
+  getProjectByCompany(company: string): Observable<Project[]> {
+    return this.http.post<Project[]>(`${this.apiURL}/project/find/company`, { company }, this.httpOptions)
+  }
+
   addProject(project: Project): Observable<Project[]> {
     return this.http.post<Project[]>(
       `${this.apiURL}/project`,
